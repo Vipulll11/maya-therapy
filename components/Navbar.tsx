@@ -15,11 +15,7 @@ const navLinks = [
   { label: 'Contact Us', href: '#contact' },
 ];
 
-export default function Navbar({
-  onBookAppointment,
-}: {
-  onBookAppointment: () => void;
-}) {
+export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
@@ -28,10 +24,12 @@ export default function Navbar({
     setServicesOpen(false);
   };
 
-  const handleBooking = () => {
-    closeMenu();
-    onBookAppointment();
-  };
+ const handleBooking = () => {
+  closeMenu();
+  document.getElementById('contact')?.scrollIntoView({
+    behavior: 'smooth',
+  });
+};
 
   return (
     <header className="relative z-50 w-full border-b border-[#dedbd1] bg-[#faf8f3]">

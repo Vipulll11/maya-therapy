@@ -53,11 +53,7 @@ const patientPhotos = [
   'https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=80',
 ];
 
-export default function Hero({
-  onBookAppointment,
-}: {
-  onBookAppointment: () => void;
-}) {
+export default function Hero() {
   return (
     <>
       {/* ================= HERO ================= */}
@@ -150,7 +146,11 @@ export default function Hero({
           >
             <button
               type="button"
-              onClick={onBookAppointment}
+             onClick={() => {
+  document.getElementById("contact")?.scrollIntoView({
+    behavior: "smooth",
+  });
+}}
               className="
                 group
                 flex w-full items-center justify-center
