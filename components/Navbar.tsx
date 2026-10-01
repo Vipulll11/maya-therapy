@@ -1,7 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronDown, Clock3, Leaf, Menu, Phone, Sparkles, X } from 'lucide-react';
+import {
+  ChevronDown,
+  Leaf,
+  Menu,
+  X,
+} from 'lucide-react';
 
 const navLinks = [
   { label: 'Home', href: '#top', active: true },
@@ -10,62 +15,168 @@ const navLinks = [
   { label: 'Contact Us', href: '#contact' },
 ];
 
-export default function Navbar({ onBookAppointment }: { onBookAppointment: () => void }) {
+export default function Navbar({
+  onBookAppointment,
+}: {
+  onBookAppointment: () => void;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setServicesOpen(false);
+  };
+
+  const handleBooking = () => {
+    closeMenu();
+    onBookAppointment();
+  };
+
   return (
-    <>
-      {/* <div className="flex min-h-10 items-center justify-center gap-2 bg-[#173b2b] px-4 py-2 text-center text-xs font-medium tracking-wide text-[#f7f3e9] sm:text-sm">
-        <Sparkles className="h-3.5 w-3.5 text-[#d8b875]" />
-        New here? Get 20% off your first session.
-        <button onClick={onBookAppointment} className="ml-1 underline underline-offset-4 transition-colors hover:text-[#d8b875]">Claim offer</button>
-      </div> */}
+    <header className="relative z-50 w-full border-b border-[#dedbd1] bg-[#faf8f3]">
+      <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-3 px-4 py-4 sm:px-6 sm:py-5 lg:px-10 xl:px-16">
 
-      {/* <div className="border-b border-[#dedbd1] bg-[#faf8f3] text-xs text-[#59635a]">
-        <div className="mx-auto flex max-w-[1440px] justify-end gap-5 px-5 py-2 sm:px-10">
-          <span className="hidden items-center gap-1.5 sm:flex"><Clock3 className="h-3.5 w-3.5" /> Mon–Sat: 9:00 AM–6:00 PM</span>
-          <a href="tel:5551234567" className="flex items-center gap-1.5 hover:text-[#31583f]"><Phone className="h-3.5 w-3.5" /> (555) 123-4567</a>
-        </div>
-      </div> */}
+        {/* Logo */}
+        <a
+          href="#top"
+          onClick={closeMenu}
+          className="flex min-w-0 shrink items-center gap-2.5 sm:gap-3"
+          aria-label="Dr. Maya Reynolds home"
+        >
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#31583f] text-[#31583f] sm:h-11 sm:w-11">
+            <Leaf className="h-5 w-5 sm:h-6 sm:w-6" strokeWidth={1.5} />
+          </span>
 
-      <header className=" flex items-center justify-between px-10 py-5 sm:px-20 lg:py-6">
-        <a href="#top" className="flex items-center gap-3" aria-label="Dr Maya home">
-          <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#31583f] text-[#31583f]"><Leaf className="h-6 w-6" strokeWidth={1.5} /></span>
-          <span className="leading-none">
-            <strong className="block font-serif text-[30px] font-medium tracking-tight text-[#1d2b21]">Dr. Maya Reynolds</strong>
-            <small className="mt-1 block text-[11px] uppercase font-semibold tracking-[0.32em] text-[#536056]">Clinical Psychology</small>
+          <span className="min-w-0 leading-none">
+            <strong className="block whitespace-nowrap font-serif text-[clamp(16px,3.5vw,30px)] font-medium tracking-tight text-[#1d2b21]">
+              Dr. Maya Reynolds
+            </strong>
+            <small className="mt-1.5 block text-[8px] font-semibold uppercase tracking-[0.16em] text-[#536056] min-[380px]:text-[9px] sm:text-[11px] sm:tracking-[0.32em]">
+              Clinical Psychology
+            </small>
           </span>
         </a>
 
-        <nav className="hidden items-center gap-7 text-[17px] font-medium text-[#424b43] lg:flex">
+        {/* Desktop navigation */}
+        <nav className="hidden items-center gap-5 text-sm font-medium text-[#424b43] lg:flex xl:gap-7 xl:text-base">
           {navLinks.slice(0, 2).map((link) => (
-            <a key={link.href} className={link.active ? 'border-b-2 border-[#31583f] pb-1 text-[#1d2b21]' : 'transition-colors hover:text-[#31583f]'} href={link.href}>{link.label}</a>
+            <a
+              key={link.href}
+              href={link.href}
+              className={
+                link.active
+                  ? 'border-b-2 border-[#31583f] pb-1 text-[#1d2b21]'
+                  : 'transition-colors hover:text-[#31583f]'
+              }
+            >
+              {link.label}
+            </a>
           ))}
-          <button className="flex items-center gap-1 transition-colors hover:text-[#31583f]" onClick={() => setServicesOpen(!servicesOpen)}>Services <ChevronDown className="h-3.5 w-3.5" /></button>
+
+          <div className="relative">
+            <button
+              type="button"
+              aria-expanded={servicesOpen}
+              aria-controls="services-dropdown"
+              onClick={() => setServicesOpen(!servicesOpen)}
+              className="flex items-center gap-1 transition-colors hover:text-[#31583f]"
+            >
+              Services
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${
+                  servicesOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+
+            {servicesOpen && (
+              <div
+                id="services-dropdown"
+                className="absolute left-0 top-full mt-3 w-52 rounded-xl border border-[#dedbd1] bg-[#fffdf8] p-2 shadow-xl"
+              >
+                <a
+                  href="#services"
+                  onClick={() => setServicesOpen(false)}
+                  className="block rounded-lg px-3 py-2.5 text-sm hover:bg-[#edf0e9]"
+                >
+                  All Therapies
+                </a>
+              </div>
+            )}
+          </div>
+
           {navLinks.slice(2).map((link) => (
-            <a key={link.href} className="transition-colors hover:text-[#31583f]" href={link.href}>{link.label}</a>
+            <a
+              key={link.href}
+              href={link.href}
+              className="transition-colors hover:text-[#31583f]"
+            >
+              {link.label}
+            </a>
           ))}
         </nav>
 
-        <button onClick={onBookAppointment} className="hidden rounded-md bg-[#31583f] px-5 py-3 text-xm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#244c34] hover:shadow-lg lg:block">Book an Appointment</button>
-
-        <button onClick={() => setMenuOpen(!menuOpen)} className="rounded-md p-2 text-[#31583f] lg:hidden" aria-label="Toggle menu">
-          {menuOpen ? <X /> : <Menu />}
+        {/* Desktop booking button */}
+        <button
+          type="button"
+          onClick={handleBooking}
+          className="hidden shrink-0 rounded-md bg-[#31583f] px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#244c34] hover:shadow-lg lg:block xl:px-5"
+        >
+          Book an Appointment
         </button>
 
-        {menuOpen && (
-          <div className="absolute left-5 right-5 top-[82px] rounded-xl border border-[#dedbd1] bg-[#fffdf8] p-3 shadow-xl lg:hidden">
-            <div className="grid gap-1 text-sm font-medium">
-              <a className="rounded-lg bg-[#edf0e9] px-4 py-3" href="#top">Home</a>
-              <a className="rounded-lg px-4 py-3 hover:bg-[#edf0e9]" href="#about">About Us</a>
-              <a className="rounded-lg px-4 py-3 hover:bg-[#edf0e9]" href="#services">Services & Therapies</a>
-              <a className="rounded-lg px-4 py-3 hover:bg-[#edf0e9]" href="#contact">Contact Us</a>
-              <button onClick={onBookAppointment} className="mt-2 rounded-lg bg-[#31583f] px-4 py-3 text-left font-semibold text-white">Book an Appointment</button>
-            </div>
+        {/* Mobile / tablet menu button */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-[#31583f] transition-colors hover:bg-[#edf0e9] lg:hidden"
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-navigation"
+        >
+          {menuOpen ? (
+            <X className="h-6 w-6" />
+          ) : (
+            <Menu className="h-6 w-6" />
+          )}
+        </button>
+      </div>
+
+      {/* Mobile / tablet dropdown */}
+      {menuOpen && (
+        <nav
+          id="mobile-navigation"
+          className="absolute left-0 right-0 top-full border-t border-[#dedbd1] bg-[#fffdf8] px-4 pb-5 pt-3 shadow-xl sm:px-6 lg:hidden"
+        >
+          <div className="mx-auto grid max-w-[1440px] gap-1 text-sm font-medium text-[#424b43]">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={closeMenu}
+                className={`rounded-lg px-4 py-3 transition-colors hover:bg-[#edf0e9] ${
+                  link.active
+                    ? 'bg-[#edf0e9] text-[#1d2b21]'
+                    : ''
+                }`}
+              >
+                {link.label === 'Therapies'
+                  ? 'Services & Therapies'
+                  : link.label}
+              </a>
+            ))}
+
+            <button
+              type="button"
+              onClick={handleBooking}
+              className="mt-2 w-full rounded-lg bg-[#31583f] px-4 py-3 text-center font-semibold text-white transition-colors hover:bg-[#244c34]"
+            >
+              Book an Appointment
+            </button>
           </div>
-        )}
-      </header>
-    </>
+        </nav>
+      )}
+    </header>
   );
 }
